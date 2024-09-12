@@ -17,6 +17,15 @@ class Product:
         self._price = price
         self.quantity = quantity
 
+    # Создать строковое представление объекта.
+    def __str__(self):
+        return f'{self.name}, {self._price} руб. Остаток: {self.quantity} шт.'
+
+    # Создать метод __add__, который складывает
+    # price * quantity двух продуктов.
+    def __add__(self, other):
+        return (self._price * self.quantity) + (other._price * other.quantity)
+
     @classmethod
     def create_product(cls, products_list):
 

@@ -53,4 +53,7 @@ def test_Category(category_1, category_2):
     assert category_1.products[1] == 'DEXP Aquilon, 27999 руб. Остаток: 15 шт.'
     assert category_1.products[2] == 'MSI Katana, 111998 руб. Остаток: 20 шт.'
 
+# Тестируем метод __str__.
+def test_str(category_1):
+    assert category_1.__str__() == 'Ноутбуки, количество продуктов: 45 шт.'
 

@@ -21,6 +21,36 @@ class Category:
         Category.number_of_categories += 1
         Category.number_of_different_products += len(products)
 
+    # Создать строковое представление объекта.
+    def __str__(self):
+        return f'{self.name}, количество продуктов: {self.__len__()} шт.'
+
+    # Создать метод __len__, которые возвращает общее
+    # количество продуктов категории в шт.
+    def __len__(self):
+        # Создать переменную счетчик.
+        quantity = 0
+        # Пройтись по каждому продукту из списка продуктов.
+        for object in self.__products:
+            # Прибавить к счетчику количество отдельно взятого продукта в шт.
+            quantity += object.quantity
+        # Возвратить общее количество продуктов категории в шт.
+        return quantity
+
+    # Создать метод __iter__ и __next__. Позволить объекту быть итерируемым.
+    # При каждой итерации возвращает объект из списка продуктов __products.
+    def __iter__(self):
+        self.index = 0
+        return self
+
+    def __next__(self):
+        if self.index < len(self.__products):
+            product = self.__products[self.index]
+            self.index += 1
+            return product
+        else:
+            raise StopIteration
+
     # Создать геттер для приватного атрибута __products.
     @property
     def products(self):

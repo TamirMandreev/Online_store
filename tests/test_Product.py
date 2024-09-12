@@ -100,6 +100,14 @@ def test_setter_price_incorrect(product_1):
         mock_print.assert_called_once_with('Цена введена некорректно.')
         assert product_1.price == 210_000
 
+# Тестируем метод __str__.
+def test_str(product_1):
+    assert product_1.__str__() == 'Iphone 15, 210000.0 руб. Остаток: 8 шт.'
+
+# Тестируем метод __add__.
+def test_add(products_list):
+    assert products_list[0] + products_list[1] == 999975
+
 
 
 
