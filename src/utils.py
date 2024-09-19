@@ -21,13 +21,14 @@ def load_categories_from_json(file_path):
         # Загрузить данные файла в переменную data.
         data = json.load(file)
 
+
     # Пройтись по каждому словарю из списка словарей data.
     for item in data:
         # Сохранить значения ключей name, description и __products
         # в соответствующие переменные.
         name = item.get('name')
         description = item.get('description')
-        products = item.get('__products')
+        products = item.get('products')
 
         # Создать на основе данных экземпляр класса Category.
         category = Category(name, description, products)
@@ -37,4 +38,3 @@ def load_categories_from_json(file_path):
     # Вернуть список полученных экземпляров.
     return categories
 
-load_categories_from_json('../src/products.json')

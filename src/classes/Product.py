@@ -4,27 +4,35 @@
 # Создать класс Product.
 class Product:
 
-    # Создать атрибуты класса.
+    # Создать аннотации типов для атрибутов класса.
     name = str
     description = str
-    price = float
+    _price = float
     quantity = int
+    color = str
 
     # Создать конструктор класса.
-    def __init__(self, name, description, price, quantity):
+    def __init__(self, name: str, description: str, price: float,
+                 quantity: int, color: str) -> None:
         self.name = name
         self.description = description
         self._price = price
         self.quantity = quantity
+        self.color = color
 
     # Создать строковое представление объекта.
     def __str__(self):
         return f'{self.name}, {self._price} руб. Остаток: {self.quantity} шт.'
 
     # Создать метод __add__, который складывает
-    # price * quantity двух продуктов.
+    # (price * quantity) двух продуктов.
+    # При этом продукты должны принадлежать одному классу.
     def __add__(self, other):
-        return (self._price * self.quantity) + (other._price * other.quantity)
+        # Проверяем типы данных у складываемых объектов.
+        if type(self) == type(other):
+            return (self._price * self.quantity) + (other._price * other.quantity)
+        else:
+            raise TypeError
 
     @classmethod
     def create_product(cls, products_list):
@@ -48,8 +56,11 @@ class Product:
                 # Узнать у пользователя количество товара.
                 quantity = int(input('Количество: ')) + existing_product.quantity
 
+                # Цвет товара остается старым.
+                color = existing_product.color
+
                 # Возвратить экземпляр класса Product.
-                return cls(name, description, price, quantity)
+                return cls(name, description, price, quantity, color)
 
             else:
                 # Узнать у пользователя описание товара.
@@ -58,9 +69,11 @@ class Product:
                 price = float(input('Цена: '))
                 # Узнать у пользователя количество товара.
                 quantity = int(input('Количество: '))
+                # Узнать у пользователя цвет товара.
+                color = input('Цвет: ')
 
                 # Возвратить экземпляр класса Product.
-                return cls(name, description, price, quantity)
+                return cls(name, description, price, quantity, color)
 
 
 

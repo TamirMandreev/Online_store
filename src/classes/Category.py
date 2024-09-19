@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # Здесь описывается класс Category
+from src.classes.Product import Product
+
 
 # Создать класс Category.
 class Category:
@@ -80,13 +82,19 @@ class Category:
 
     def add_product(self, product_obj):
         '''
-        Метод add_products принимает на вход объект класса Product
+        Метод add_product принимает на вход объект класса Product
         и добавляет его в переменную __products класса Category.
         :param product_obj: class 'src.classes.Product.Product'
         :return:
         '''
-
-        self.__products.append(product_obj)
+        # Проверить, является ли добавляемый продукт экземпляром
+        # класса Product или его наследником.
+        if isinstance(product_obj, Product):
+            # Если является, добавить в список продуктов.
+            self.__products.append(product_obj)
+        else:
+            # Если не является, вызвать исключение.
+            raise TypeError
 
     def get_names(self):
         return self.__products

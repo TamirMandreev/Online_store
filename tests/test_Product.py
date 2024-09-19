@@ -2,7 +2,10 @@ import pytest
 from unittest.mock import patch
 
 from src.classes.Category import Category
+from src.classes.LawnGrass import LawnGrass
 from src.classes.Product import Product
+from src.classes.Smartphone import Smartphone
+
 
 @pytest.fixture
 def product_1():
@@ -10,16 +13,64 @@ def product_1():
     description = '512GB, Gray space'
     price = 210000.0
     quantity = 8
+    color = 'Black'
 
-    return Product(name, description, price, quantity)
+    return Product(name, description, price, quantity, color)
 
 @pytest.fixture
 def products_list():
-    return [Product('Huawei MateBook', 'Рассчитан на решение всевозможных домашних, учебных или офисных задач', 57_999,10),
-            Product('DEXP Aquilon', 'Недорогой ПК для базовых задач', 27_999, 15),
-            Product('MSI Katana', 'Создан для погружения в захватывающий виртуальный мир', 111_998, 20)]
+    return [Product('Huawei MateBook', 'Рассчитан на решение всевозможных домашних, учебных или офисных задач', 57_999,10, 'Black'),
+            Product('DEXP Aquilon', 'Недорогой ПК для базовых задач', 27_999, 15, 'Black'),
+            Product('MSI Katana', 'Создан для погружения в захватывающий виртуальный мир', 111_998, 20, 'Black')]
 
+@pytest.fixture
+def smartphone_1():
+    smartphone_1 = Smartphone('Realme',
+                              'Мощный процессор. Технологии Ai.\n'
+                              ' Snapdragon 8s | Камера Sony с ИИ ночной съемкой. \n'
+                              'Самый яркий в мире флагманский дисплей.',
+                              69_999,
+                              100,
+                              'black',
+                              1650000,
+                              'GT6',
+                              512)
+    return smartphone_1
 
+@pytest.fixture
+def smartphone_2():
+    smartphone_2 = Smartphone('Realme',
+                              'Передовая производительность\n'
+                              'Snapdragon 7+ Gen 3 / Сверхъяркий дисплей 6000 нит.',
+                              59_999,
+                              100,
+                              'black',
+                              1650000,
+                              'GT 6T',
+                              256)
+    return smartphone_2
+
+@pytest.fixture
+def lawn_grass_1():
+    lawn_grass_1 = LawnGrass('Засухоустойчивый',
+                             'Cмесь газонных трав, состоящая из медленнорастущих сортов, не требующих частой стрижки и тщательного ухода. Используется для создания газонов с мягким покрытием в парках, вокруг загородных домов, для создания детских игровых площадок.',
+                             37_400,
+                             100,
+                             'Light green',
+                             'Дания',
+                             20)
+    return lawn_grass_1
+
+@pytest.fixture
+def lawn_grass_2():
+    lawn_grass_2 = LawnGrass('Цветущий',
+                             'Смесь семян газонных трав и полевых цветов, предназначенная для создания газона в виде цветущего луга. В Состав входит около 20 - ти видов однолетних и многолетних полевых цветов, отличающихся различными сроками цветения.',
+                             40_000,
+                             100,
+                             'Light green',
+                             'Дания',
+                             20)
+    return lawn_grass_2
 
 # Тестируем создание экземпляра класса Product.
 def test_Product(product_1):
@@ -28,6 +79,7 @@ def test_Product(product_1):
     assert product_1.description == '512GB, Gray space'
     assert product_1.price == 210000.0
     assert product_1.quantity == 8
+    assert product_1.color == 'Black'
 
 # Тестируем класс-метод create_product. Ситуация, когда
 # создаваемый продукт уже существует. При этом новая цена больше старой.
@@ -41,6 +93,7 @@ def test_create_product_existing_price_increase(products_list):
     assert product.description == 'Рассчитан на решение всевозможных домашних, учебных или офисных задач'
     assert product.price == 100000
     assert product.quantity == 20
+    assert product.color == 'Black'
 
 # Тестируем класс-метод create_product. Ситуация, когда
 # создаваемый продукт уже существует. При этом новая цена меньше старой.
@@ -59,7 +112,9 @@ def test_create_product_existing_price_reduction(products_list):
 # создаваемый продукт новый.
 def test_create_product_new(products_list):
     # Имитируем ввод с клавиатуры.
-    with patch('builtins.input', side_effect=['Новый продукт', 'С помощью этого описания мы тестируем метод create_product', 25.5, 5]):
+    # Цвет товара остается старымж
+    # Цвет товара остается старымж
+    with patch('builtins.input', side_effect=['Новый продукт', 'С помощью этого описания мы тестируем метод create_product', 25.5, 5, 'Black']):
         product = Product.create_product(products_list)
 
     # Проверяем, что продукт создан с правильными атрибутами.
@@ -67,6 +122,7 @@ def test_create_product_new(products_list):
     assert product.description == 'С помощью этого описания мы тестируем метод create_product'
     assert product.price == 25.5
     assert product.quantity == 5
+    assert product.color == 'Black'
 
 # Тестируем геттер атрибута price
 def test_getter_price(product_1):
@@ -105,8 +161,18 @@ def test_str(product_1):
     assert product_1.__str__() == 'Iphone 15, 210000.0 руб. Остаток: 8 шт.'
 
 # Тестируем метод __add__.
-def test_add(products_list):
+def test_add(products_list, smartphone_1, smartphone_2,
+             lawn_grass_1, lawn_grass_2):
+    # Ситуация, когда экземпляры класса принадлежат классу Product.
     assert products_list[0] + products_list[1] == 999975
+    # Ситуация, когда экземпляры класса принадлежат
+    # дочернему классу Smartphone.
+    assert smartphone_1 + smartphone_2 == 12999800
+    assert lawn_grass_1 + lawn_grass_2 == 7740000
+    # Ситуация, когда складываемые экземпляры принадлежат
+    # разным классам.
+    with pytest.raises(TypeError):
+        lawn_grass_1 + smartphone_1
 
 
 
