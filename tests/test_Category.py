@@ -1,6 +1,7 @@
 import pytest
 from src.classes.Category import Category
 from src.classes.Product import Product
+from src.classes.Smartphone import Smartphone
 from tests.test_Product import product_1
 
 
@@ -20,6 +21,20 @@ def create_products_smartphones():
     product_2 = Product('Samsung Galaxy A 55', 'Сохраняет яркость и четкость изображений при любом освещении', 43_999, 25, 'black')
     product_3 = Product('Realme Note 50', 'Бюджетный смартфон для тех, кто старается быть продуктивным', 7_499, 40, 'black')
     return [product_1, product_2, product_3]
+
+# Фикстура smartphone_1 создает экземпляр класса Smarthone.
+@pytest.fixture
+def smartphone_1():
+    smartphone = Smartphone('Realme',
+                              'Передовая производительность\n'
+                              'Snapdragon 7+ Gen 3 / Сверхъяркий дисплей 6000 нит.',
+                              59_999,
+                              0,
+                              'black',
+                              1650000,
+                              'GT 6T',
+                              256)
+    return smartphone
 
 
 # Фикстура category_1 создает экземпляр класса Category - ноутбуки.
@@ -68,7 +83,7 @@ def test_str(category_1):
 
 
 # Тестируем метод add_product.
-def test_add_product(category_1, product_1, random_obj):
+def test_add_product(category_1, product_1, random_obj, smartphone_1):
     # Добавляем к category_1 один экземпляр класса product.
     category_1.add_product(product_1)
     # Проверяем количество продуктов. Должно быть +1.
@@ -77,3 +92,16 @@ def test_add_product(category_1, product_1, random_obj):
     # к классу Product или его потомкам.
     with pytest.raises(TypeError):
         category_1.add_product(random_obj)
+    # Проверяем добавление экземпляра(продукта), количество которого
+    # равняется нулю. В таком случае должно выбрасываться исключение
+    # ValueError.
+    with pytest.raises(ValueError):
+        category_1.add_product(smartphone_1)
+
+# Тестируем метод average_price_tag_for_products.
+def test_average_price_tag_for_products(category_1):
+    # С помощью функции round округляем значение
+    # до 2-х знаков после запятой.
+    assert round(category_1.average_price_tag_for_products(), 2) == 65_998.67
+    # Если в категории нет товаров.
+    assert Category('', '', []).average_price_tag_for_products() == 0

@@ -90,6 +90,10 @@ class Category:
         # Проверить, является ли добавляемый продукт экземпляром
         # класса Product или его наследником.
         if isinstance(product_obj, Product):
+            # Проверить количество товара. Если количество товара
+            # равно нулю, вызвать исключение ValueError.
+            if product_obj.quantity == 0:
+                raise ValueError('Нельзя добавить товар с нулевым количеством.')
             # Если является, добавить в список продуктов.
             self.__products.append(product_obj)
         else:
@@ -103,4 +107,32 @@ class Category:
         #     names.append(obj.name)
         #
         # return names
+
+    # Создать метод average_price_tag_for_products,
+    # который подсчитывает средний ценник всех товаров.
+    def average_price_tag_for_products(self):
+        '''
+        Метод average_price_tag_for_products
+        подсчитывает средний ценник всех товаров
+        :return:
+        '''
+        # Создать переменную-счетчик. В нее будем складывать цену
+        # каждого товара.
+        counter = 0
+        # Запустить цикл по всем продуктам, которые хранятся
+        # в переменной self.__products.
+        for product in self.__products:
+            # Прибавить к переменной-счетчик цену отдельного товара.
+            counter += product.price
+
+        try:
+            # Узнать среднюю цену всех товаров и вернуть ее.
+            avg_price = counter / len(self.__products)
+            return avg_price
+        except ZeroDivisionError:
+            # Если в категории нет товаров, отловить
+            # исключение ZeroDivisionError. В таком случае
+            # цена будет равна нулю.
+            avg_price = 0
+            return avg_price
 
