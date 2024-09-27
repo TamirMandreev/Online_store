@@ -7,7 +7,7 @@ class LawnGrass(Product):
 
     # Создать аннотации типов для атрибутов класса.
     country_of_origin: str # Страна производитель
-    growth_time = int # Время роста
+    growth_time: int # Время роста
 
     # Создать конструктор класса.
     def __init__(self, name: str, description: str, price: float,
@@ -16,3 +16,8 @@ class LawnGrass(Product):
         super().__init__(name, description, price, quantity, color)
         self.country_of_origin = country_of_origin
         self.growth_time = growth_time
+
+        # Вызвать метод __repr__, чтобы при создании
+        # экземпляра класса выводилось сообщение о его создании.
+        # Работа данного метода определяется в классе MixinLog.
+        print(self.__repr__())

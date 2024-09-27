@@ -1,26 +1,32 @@
 # -*- coding: utf-8 -*-
 # Здесь описывается класс Product.
+from src.classes.Item import Item
+from src.classes.MixinLog import MixinLog
+
 
 # Создать класс Product.
-class Product:
+class Product(MixinLog, Item):
 
     # Создать аннотации типов для атрибутов класса.
-    name = str
-    description = str
-    _price = float
-    quantity = int
-    color = str
+    name: str
+    description: str
+    _price: float
+    quantity: int
+    color: str
 
     # Создать конструктор класса.
     def __init__(self, name: str, description: str, price: float,
                  quantity: int, color: str) -> None:
+
+        # Создать атрибуты экземпляра класса.
         self.name = name
         self.description = description
         self._price = price
         self.quantity = quantity
         self.color = color
 
-    # Создать строковое представление объекта.
+
+    # Создать строковое представление объекта для пользователей.
     def __str__(self):
         return f'{self.name}, {self._price} руб. Остаток: {self.quantity} шт.'
 
@@ -74,7 +80,6 @@ class Product:
 
                 # Возвратить экземпляр класса Product.
                 return cls(name, description, price, quantity, color)
-
 
 
     @property

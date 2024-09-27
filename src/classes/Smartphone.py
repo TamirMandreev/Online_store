@@ -19,5 +19,10 @@ class Smartphone(Product):
         self.model = model
         self.built_in_memory = built_in_memory
 
+        # Вызвать метод __repr__, чтобы при создании
+        # экземпляра класса выводилось сообщение о его создании.
+        # Работа данного метода определяется в классе MixinLog.
+        print(self.__repr__())
+
 
 
